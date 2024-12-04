@@ -1,0 +1,40 @@
+[Peer]
+# nic1
+PublicKey = j26q+toxjJLrqllj8Cu6cEnhfqkX9TOkjTJPXmRRwiI=
+AllowedIPs = 10.58.0.1/32, 10.58.11.0/24, 10.58.1.0/24
+
+[Peer]
+# nic2
+PublicKey = Zj/7vJ8wJEENjYzJB0CdoMlHcol7KgnzURoNvjqDkx4=
+AllowedIPs = 10.58.0.2/32, 10.58.12.0/24, 10.58.2.0/24
+
+[Peer]
+# nic3
+PublicKey = c81U/elbNNfoSpxRbxlSDM+RW7ke97V8JEcUnFzodiA=
+AllowedIPs = 10.58.0.3/32, 10.58.13.0/24
+
+[Peer]
+# nic4
+PublicKey = X/ExhGJrEwmjQ/Gf3rNnjPb6EicW4I56y1f0BlTdqDU=
+AllowedIPs = 10.58.0.4/32, 10.58.14.0/24
+
+[Peer]
+# nic5
+PublicKey = WnhBzRLKl/X1aHOzjYqqv8J8fi3JOhf6mXnwfhrW7go=
+AllowedIPs = 10.58.0.5/32, 10.58.15.0/24
+
+[Peer]
+# mirror
+PublicKey = cI4VZ0go3Shy5ZwcI6+ThM9LDEjkakpBSrL5q32MSnM=
+AllowedIPs = 10.58.0.6/32, 10.58.16.0/24
+
+[Peer]
+# mirror2
+PublicKey = WQUzoT3JXeuUwJ8wxYF+8jx+Z+0/c6lTrGW2ml1DREI=
+AllowedIPs = 10.58.0.7/32, 10.58.17.0/24
+
+[Peer]
+# xjtuana.cn
+PublicKey = qe+OrMVM/gRXPc4AdSAnkQEY1fcAx4xDFUuqsxi6GVI=
+AllowedIPs = 10.58.0.8/32, 10.58.18.0/24
+

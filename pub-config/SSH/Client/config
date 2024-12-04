@@ -1,0 +1,10 @@
+Host *.ana
+    User root
+    Port 22
+    PasswordAuthentication no
+    IdentityFile ~/.ssh/id_ed25519
+    StrictHostKeyChecking yes
+
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
