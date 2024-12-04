@@ -1,0 +1,40 @@
+.search_key{
+    background-color: rgb(0, 255, 200);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display:  flex;
+    flex-direction:column;
+}
+.search_detail{
+    margin: auto;
+}
+.search_key button{
+    margin-top: 2%;
+    width: 40%;
+    height: 20%;
+    border-radius: 10%;
+    outline: none;
+    background-color: rgb(32, 97, 219);
+    color: aliceblue;
+}
+.search_key table{
+    border-style: solid;
+    border: 1;
+    margin: auto;
+}
+.search_key table th{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.table_border{
+    border: solid 1px;
+}
+.search_key input{
+    border-radius: 15%;
+    width: 300px;
+    outline: none;
+    padding-top: 1%;
+}

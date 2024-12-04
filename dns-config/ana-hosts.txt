@@ -1,0 +1,79 @@
+# nic1
+nic1.ana 10.58.0.1
+gpt.ana 10.58.11.60
+git.ana 10.58.11.200
+mariadb.nic1.ana 10.58.11.100
+pma.ana 10.58.11.50
+pma.nic1.ana 10.58.11.50
+
+api-micro-mail.dev.ana 10.58.11.128
+api-auth-login.dev.ana 10.58.11.129
+api-micro-client.dev.ana 10.58.11.130
+api-micro-user.dev.ana 10.58.11.131
+api-micro-role.dev.ana 10.58.11.132
+api.dev.ana 10.58.11.133
+ivpn.dev.ana 10.58.11.60
+swagger-ui.ana 10.58.11.4
+home.dev.ana 10.58.11.60
+
+
+
+# nic3
+ide.ana 10.58.13.2
+portainer.nic3.ana 10.58.13.3
+xczh.vscr.ana 10.58.13.10
+redis.nic3.ana 10.58.13.30
+
+
+# nic4
+nginx.nic4.ana 10.58.14.2
+
+# nic5
+nic5.ana 10.58.0.5
+nic5.pub.ana 202.117.18.222
+mariadb.nic5.ana 10.58.15.2
+redis.nic5.ana 10.58.15.3
+nginx.nic5.ana 10.58.15.4
+website2017.ana 10.58.15.4
+nginx.test.nic5.ana 10.58.15.100
+
+# m1
+m1.ana 10.58.0.6
+m1.pub.ana 202.117.13.130
+
+mirrors.ana 10.58.16.100
+monitor.ana 10.58.16.100
+cr.ana 10.58.16.100
+speed.ana 10.58.16.100
+minio-console.ana 10.58.16.100
+nexus-console.ana 10.58.16.100
+
+drone.ana 10.58.16.14
+mariadb.m1.ana 10.58.16.15
+
+# m2
+m2.ana 10.58.0.7
+m2.pub.ana 202.117.1.102
+
+envoy.m2.ana 10.58.17.2
+minio-console.m2.ana 10.58.17.2
+
+nginx.m2.ana 10.58.17.3
+mongodb.m2.ana 10.58.17.101
+dns.ana 10.58.17.254
+
+# e16
+e16.ana 10.58.100.1
+pan.ana 10.58.100.1
+
+# e2
+e2.ana 10.58.101.1
+
+# wms10
+wms10.ana 10.58.99.1
+print.wms10.ana 10.58.99.10
+
+# other
+relay.xjtu.ana 10.49.2.2
+
+

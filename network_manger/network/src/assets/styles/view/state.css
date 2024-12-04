@@ -1,0 +1,17 @@
+.top_button{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.state{
+    width: 100%;
+}
+.wid_80{
+    width: 80%;
+    margin-left: 10%;
+}
+.nomarl{
+    background-color: rgb(65, 248, 187);
+}
+.wrong{
+    background-color: rgb(236, 105, 101);
+}

@@ -1,0 +1,22 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: update_config
+    image: appleboy/drone-ssh
+    when:
+      branch:
+        - master
+    settings:
+      host: 10.58.0.1
+      user: root
+      key:
+        from_secret: ssh_key
+      port: 22
+      command_timeout: 2m
+      script:
+        - cd /data/docker-image/mosdns/config
+        - git pull
+        - docker restart mosdns
