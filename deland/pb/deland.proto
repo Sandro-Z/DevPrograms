@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "git.ana/xjtuana/deland/pb";
+
+message Data {
+    Head head = 1;
+    Body body = 2;
+}
+
+message Head {
+    repeated Signature signature = 1;
+    Timestamp timestamp = 2;
+}
+
+message Signature {
+    string domain = 1;
+    bytes r = 2;
+    bytes s = 3;
+}
+
+message Timestamp {
+    int64 seconds = 1;
+    int32 nanos = 2;
+}
+
+message Body {
+    Post post = 1;
+}
+
+message Post {
+    bytes comment_to = 1;
+    bytes reply_to = 2;
+    string text = 3;
+}

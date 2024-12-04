@@ -1,0 +1,1441 @@
+# Reference: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
+
+openapi: 3.0.2
+info:
+  version: 2.0.0
+  title: XJTUANA
+  description: 西安交通大学网络管理协会官方OpenAPI文档
+  #termsOfService: https://ana.xjtu.edu.cn/developer/terms/
+  contact:
+    name: 研发部
+    #url: https://ana.xjtu.edu.cn/developer/
+    email: xjtuana@mail.xjtu.edu.cn
+  license:
+    name: Copyright (C) 2020 XJTUANA. All rights reserved.
+    #url: /
+#externalDocs:
+  #description: 外部文档
+  #url: https://ana.xjtu.edu.cn/developer/external-docs
+servers:
+- url: http://ana2020.nic3.ana/api/{majorVersion}
+  description: 测试环境
+  variables:
+    majorVersion:
+      default: v2
+      enum:
+        - 'v2'
+      description: 主版本号
+- url: https://ana.xjtu.edu.cn/api/{majorVersion}
+  description: 生产环境
+  variables:
+    majorVersion:
+      default: v2
+      enum:
+        - 'v2'
+      description: 主版本号
+tags:
+- name: campuses
+  description: 校区相关
+- name: club
+  description: 社团相关
+- name: order
+  description: 报修单相关
+- name: faq
+  description: 常见问题相关
+paths:
+  /campuses:
+    get:
+      tags:
+      - campuses
+      summary: 获取全部校区列表
+      description: 获取当前校区列表,其条目有限且基本不会变化
+      operationId: ''
+      parameters:
+      - $ref: '#/components/parameters/Accept-Language'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/campus'
+        404:
+          description: 没有符合条件的数据
+  /campuses/{campus_id}:
+    get:
+      tags:
+      - campuses
+      summary: 查询单个校区的信息
+      description: 查询单个校区的信息
+      operationId: ''
+      parameters:
+      - name: campus_id
+        in: path
+        description: 校区编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/campus_id"
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/campus'
+        404:
+          description: 没有符合条件的数据
+  /campuses/{campus_id}/buildings:
+    get:
+      tags:
+      - campuses
+      summary: 查询宿舍楼列表
+      description: 查询某个校区、某部门或者某人负责的全部宿舍楼列表
+      operationId: ''
+      parameters:
+      - name: campus_id
+        in: path
+        description: 校区编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/campus_id"
+      - name: group_id
+        in: query
+        description: 部门编号
+        required: false
+        schema:
+          $ref: "#/components/schemas/group_id"
+      - name: member_id
+        in: query
+        description: 部员编号
+        required: false
+        schema:
+          $ref: "#/components/schemas/member_id"
+      - $ref: '#/components/parameters/Accept-Language'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/building'
+        404:
+          description: 没有符合条件的数据
+  /campuses/{campus_id}/buildings/{building_id}:
+    get:
+      tags:
+      - campuses
+      summary: 查询单栋宿舍楼的信息
+      description: 通过主键building_id查询单栋宿舍楼
+      operationId: ''
+      parameters:
+      - name: campus_id
+        in: path
+        description: 校区编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/campus_id"
+      - name: building_id
+        in: path
+        description: 楼宇编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/building_id"
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/building'
+        404:
+          description: 没有符合条件的数据
+  /club/positions:
+    get:
+      tags:
+      - club
+      summary: 查询社团全部职位
+      description: 获取当前全部职位,其条目有限且基本不会变化
+      operationId: ''
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/position'
+        404:
+          description: 没有符合条件的数据
+  /club/groups:
+    get:
+      tags:
+      - club
+      summary: 查询社团全部部门
+      description: 获取社团全部部门,其条目有限且基本不会变化
+      operationId: ''
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/group'
+        404:
+          description: 没有符合条件的数据
+  /club/members:
+    get:
+      tags:
+      - club
+      summary: 查询社员列表
+      description: 查询符合条件的社员列表,返回社员的基本信息
+      operationId: ''
+      parameters:
+      - name: name
+        in: query
+        description: 社员姓名
+        required: false
+        schema:
+          $ref: "#/components/schemas/name"
+      - name: netid
+        in: query
+        description: 社员NetID
+        required: false
+        schema:
+          $ref: "#/components/schemas/netid"
+      - name: group_id
+        in: query
+        description: 部门编号
+        required: false
+        schema:
+          $ref: "#/components/schemas/group_id"
+      - name: position_id
+        in: query
+        description: 职位编号
+        required: false
+        schema:
+          $ref: "#/components/schemas/position_id"
+      - name: member_quited
+        in: query
+        description: 是否包含已退社人员
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          default: 0
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/member'
+        404:
+          description: 没有符合条件的数据
+    post:
+      tags:
+      - club
+      summary: 创建一个社员
+      description: 创建一个部员，仅需提供学号和部门信息，其他信息通过学校接口获得，需要保证已退社部员可以正常入社
+      operationId: ''
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userno:
+                  $ref: "#/components/schemas/userno"
+                position_id:
+                  $ref: "#/components/schemas/position_id"
+                group_id:
+                  $ref: "#/components/schemas/group_id"
+                mobile:
+                  $ref: "#/components/schemas/mobile"
+              required:
+              - userno
+              - position_id
+              - group_id
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+        404:
+          description: 学号对应的学生不存在
+        409:
+          description: 部员创建与现有规则冲突，可能是所添加部员已在部员列表中
+  /club/members/{member_id}:
+    get:
+      tags:
+      - club
+      summary: 查询社员详细信息
+      description: 通过member_id查询社员的详细信息
+      operationId: ''
+      parameters:
+      - name: member_id
+        in: path
+        description: 社员编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/member_id"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member_all'
+        404:
+          description: 没有符合条件的数据
+    patch:
+      tags:
+      - club
+      summary: 修改社员信息
+      description: 修改社员信息
+      operationId: ''
+      parameters:
+      - name: member_id
+        in: path
+        description: 社员编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/member_id"
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                position_id:
+                  $ref: "#/components/schemas/position_id"
+                group_id:
+                  $ref: "#/components/schemas/group_id"
+                mobile:
+                  $ref: "#/components/schemas/mobile"
+                qq:
+                  $ref: "#/components/schemas/qq"
+                wechat:
+                  $ref: "#/components/schemas/wechat"
+                alipay:
+                  $ref: "#/components/schemas/alipay"
+                email:
+                  $ref: "#/components/schemas/email"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member_all'
+        404:
+          description: member_id不存在
+        409:
+          description: 部员修改与现有规则冲突，可能是部分参数不允许修改
+    delete:
+      tags:
+      - club
+      summary: 社员退社
+      description: 标记社员为已退社
+      operationId: ''
+      parameters:
+      - name: member_id
+        in: path
+        description: 社员编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/member_id"
+      responses:
+        204:
+          description: OK
+        404:
+          description: member_id不存在
+  /club/member/point_records:
+    get:
+      tags:
+      - club
+      summary: 获取当前用户的积分记录
+      description: 获取当前用户的积分记录
+      operationId: ''
+      parameters:
+      - $ref: '#/components/parameters/since'
+      - $ref: '#/components/parameters/before'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/point_record'
+        404:
+          description: 没有符合条件的数据
+
+  /club/members/{member_id}/point_records:
+    get:
+      tags:
+      - club
+      summary: 获取任意用户的积分记录
+      description: 获取任意用户的积分记录
+      operationId: ''
+      parameters:
+      - name: member_id
+        in: path
+        description: 社员编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/member_id"
+      - $ref: '#/components/parameters/since'
+      - $ref: '#/components/parameters/before'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/per_page'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/point_record'
+        404:
+          description: 没有符合条件的数据
+    post:
+      tags:
+      - club
+      summary: 创建一个积分记录
+      description: 创建一个积分记录
+      operationId: ''
+      parameters:
+      - name: member_id
+        in: path
+        description: 社员编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/member_id"
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  description: 记录数值
+                  type: integer
+                  example: 4
+                remark:
+                  description: 记录说明
+                  type: string
+                  example: 活动奖励
+              required:
+              - count
+              - remark
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/point_record'
+        409:
+          description: 参数错误
+  /user/orders: 
+    get:
+      tags:
+      - order
+      summary: 获取当前用户的订单列表
+      description: 获取当前用户的订单列表
+      operationId: ""
+      parameters:
+      - name: "state"
+        in: "query"
+        description: 订单状态
+        required: false
+        schema:
+          $ref: "#/components/schemas/order_state"
+        example: "all"
+      - $ref: "#/components/parameters/since"
+      - $ref: "#/components/parameters/direction"
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/order"
+        404:
+          $ref: "#/components/responses/404"
+    post:
+      tags:
+      - order
+      summary: 创建当前用户的订单
+      description: 创建一个订单。当前用户必须没有未完成订单，并且离上次订单取消满30分钟。
+      operationId: ""
+      requestBody:
+        description: 不含ID的订单信息
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                building_id:
+                  $ref: "#/components/schemas/building_id"
+                room:
+                  $ref: "#/components/schemas/room_name"
+                service_id:
+                  $ref: "#/components/schemas/service_id"
+                mobile:
+                  $ref: "#/components/schemas/mobile"
+              required:
+              - building_id
+              - room
+              - service_id
+              - mobile
+      responses:
+        201:
+          description: "创建成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        409:
+          $ref: "#/components/responses/409"
+  /user/orders/{order_id}:
+    get:
+      tags:
+      - order
+      summary: 获取当前用户的订单
+      description: 获取当前用户的订单
+      operationId: ""
+      parameters:
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      responses:
+        200:
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order_all"
+        404:
+          $ref: "#/components/responses/404"
+    patch:
+      tags:
+      - order
+      summary: 修改当前用户的订单（部分更新）
+      description: 修改订单内容。仅在订单状态为'created'时可修改。
+      operationId: ""
+      parameters: 
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      requestBody:
+        description: 仅order的部分字段允许修改。要修改其他字段，可删除订单再创建新订单,或者当部员结单后。
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile:
+                  $ref: "#/components/schemas/mobile"
+                qq:
+                  $ref: "#/components/schemas/qq"
+                wechat:
+                  $ref: "#/components/schemas/wechat"
+                remark:
+                  description: 用户备注
+                  type: string
+                  maxLength: 32768
+                  example: 网坏了，拨号拨不上
+      responses:
+        200:
+          description: 修改成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        404:
+          description: 订单不存在
+        409:
+          description: 参数错误
+    delete:
+      tags:
+      - order
+      summary: 删除当前用户的订单
+      description: 删除一个订单。仅在订单状态为'created'时可删除。
+      operationId: ""
+      parameters: 
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      responses:
+        204:
+          "$ref": "#/components/responses/204"
+        404:
+          description: 订单不存在
+  /club/member/orders/{order_id}:
+    post:
+      tags:
+        - order
+      summary: 部员评论用户并评分
+      description: 部员评论用户并评分
+      operationId: ''
+      parameters:
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      requestBody:
+        description: 仅仅当用户完成评论部员后部员可以修改
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_evaluate_msg	:
+                  description: 部员反馈
+                  type: string
+                  maxLength: 32768
+                  example: 没啥问题
+                member_evaluate_score	:
+                  description: 部员评分
+                  type: integer
+                  example: 1
+                realistic_service_id	:
+                  description: 实际维修方式
+                  type: integer
+                  example: 1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/order_all'
+        404:
+          description: 没有符合条件的数据
+  /users/{user_id}/orders:
+    get:
+      tags:
+      - order
+      summary: 获取用户的订单
+      description: 获取某个用户的订单列表。
+      operationId: ""
+      parameters:
+      - name: user_id
+        in: path
+        description: 用户编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/user_id"
+      - name: "state"
+        in: "query"
+        description: 订单状态
+        required: false
+        schema:
+          $ref: "#/components/schemas/order_state"
+        example: "all"
+      - $ref: "#/components/parameters/since"
+      - $ref: "#/components/parameters/direction"
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/order"
+        404:
+          $ref: "#/components/responses/404"
+    post:
+      tags:
+      - order
+      summary: 创建用户的订单
+      description: 为某个用户创建订单。创建人必须拥有全局订单写权限。此接口用于未报修就帮助他人解决问题后补订单
+      operationId: ""
+      parameters:
+      - name: user_id
+        in: path
+        description: 用户编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/user_id"
+      requestBody:
+        description: 不含ID的订单信息
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                building_id:
+                  $ref: "#/components/schemas/building_id"
+                room:
+                  $ref: "#/components/schemas/room_name"
+                service_id:
+                  $ref: "#/components/schemas/service_id"
+                mobile:
+                  $ref: "#/components/schemas/mobile"
+              required:
+              - building_id
+              - room
+              - service_id
+              - mobile
+      responses:
+        201:
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        409:
+          $ref: "#/components/responses/409"
+  /orders/{order_id}:
+    patch:
+      tags:
+      - order
+      summary: 修改用户的订单（部分更新）
+      description: 修改一个订单。修改人必须拥有全局订单写权限
+      operationId: ""
+      parameters: 
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/order"
+      responses:
+        200:
+          description: 修改成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+        404:
+          description: 订单不存在
+        409:
+          description: 参数错误
+    delete:
+      tags: 
+      - order
+      summary: 删除用户的订单
+      description: 删除一个订单。删除人必须拥有全局订单写权限。仅在订单状态为'created'时可删除
+      operationId: ""
+      parameters: 
+      - name: order_id
+        in: path
+        description: 报修单编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/order_id"
+        example: 3
+      responses:
+        204:
+          $ref: "#/components/responses/204"
+        404:
+          description: 订单不存在
+  /faqs/categories:
+   get:
+    tags:
+    - faq
+    summary: 全表查询当前FAQ类别列表
+    parameters: 
+    - $ref: '#/components/parameters/Accept-Language'
+    responses:
+      200:
+        description: 请求成功
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/faq"
+      404:
+        description: 没有符合条件的数据
+
+  /faqs:
+    get:
+      tags:
+      - faq
+      summary: 查询FAQ列表
+      description: 查询faq列表，可以指定目录进行查询，不指定目录时为全表查询
+      parameters:
+      - name: category_id
+        in: query
+        description: FAQ目录索引
+        schema:
+          $ref: '#/components/schemas/category_id'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: 请求成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/faq_detail"
+        404:
+          description: 没有符合条件的数据
+    post:
+      tags:
+      - faq
+      summary: 创建一条FAQ
+      description: 创建一条FAQ
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  $ref: "#/components/schemas/category_id"
+                index:
+                  type: integer
+                  example: 1
+                question:  
+                  $ref: "#/components/schemas/faq_question"
+                answer:
+                  $ref: "#/components/schemas/faq_answer"
+      responses: 
+        201:
+          description: 创建完成
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  category_id:
+                    $ref: "#/components/schemas/category_id"
+                  index:
+                    type: integer
+                    example: 1
+                  question:  
+                    $ref: "#/components/schemas/faq_question"
+                  answer:
+                    $ref: "#/components/schemas/faq_answer"
+        409:
+          description: faq创建失败，可能是未设置faq目录或未设置faq类别内部序号未设置
+  /faqs/{faq_id}:
+    get:
+      tags:
+      - faq
+      summary: 查询单条FAQ
+      description: 查询faq列表，仅使用faq_id(主键)进行查询
+      parameters: 
+      - name: faq_id
+        in: path
+        description: 常见问题编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/faq_id"
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: 请求成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/faq_detail"
+        404:
+          description: 没有符合条件的数据
+    put:
+      tags:
+      - faq
+      summary: 更新一条FAQ(全内容更新)
+      description: 对一条faq内容进行全量更新
+      parameters: 
+      - name: faq_id
+        in: path
+        description: 常见问题编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/faq_id"
+      - $ref: '#/components/parameters/Accept-Language'
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  $ref: "#/components/schemas/category_id"
+                index:
+                  type: integer
+                  example: 1
+                question:  
+                  $ref: "#/components/schemas/faq_question"
+                answer:
+                  $ref: "#/components/schemas/faq_answer"
+      responses:
+        200:
+          description: 请求成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/faq_detail"
+        409:
+          description: "faq修改失败，可能是未设置faq目录或未设置faq类别内部序号冲突"
+    delete: 
+      tags:
+      - faq
+      summary: 删除一条FAQ
+      description: 对一条faq进行删除
+      parameters: 
+      - name: faq_id
+        in: path
+        description: 常见问题编号
+        required: true
+        schema:
+          $ref: "#/components/schemas/faq_id"
+      responses: 
+        204:
+          description: OK
+        404:
+          description: 请求格式正确,但所请求删除的文档不存在
+
+components:
+  schemas:
+    faq:
+      description: 常见问题目录
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 1
+        name: 
+          type: string
+          example: 社团相关
+    faq_id:
+      description: 常见问题编号
+      type: integer
+      example: 1
+    category_id:
+      description: 常见问题类别编号
+      type: integer
+      example: 1
+    faq_question:
+      description: 常见问题内容
+      type: string
+      example: 怎么加入社团？
+    faq_answer:
+      description: 常见问题答案
+      type: string
+      example: 你没戏了，放弃吧
+    faq_detail:
+      description: 常见问题具体内容
+      type: object
+      properties:
+        id: 
+          $ref: "#/components/schemas/faq_id"
+        category_id:
+          $ref: "#/components/schemas/category_id"
+        index:
+          type: integer
+          example: 1
+        question:
+          $ref: "#/components/schemas/faq_question"
+        answer:
+          $ref: "#/components/schemas/faq_answer"
+        created_at:
+            description: 创建时间
+            type: integer
+        updated_at:
+          description: 更新时间
+          type: integer
+    campus_id:
+      description: 校区编号
+      type: integer
+      example: 1
+    campus:
+      description: 校区
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/campus_id"
+        name:
+          description: 校区名称
+          type: string
+          example: 兴庆校区东
+    building_id:
+      description: 楼宇编号
+      type: integer
+      example: 1
+    building:
+      description: 楼宇
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/building_id"
+        name:
+          description: 楼宇名称
+          type: string
+          example: 东1
+        campus:
+          "$ref": "#/components/schemas/campus"
+        group:
+          "$ref": "#/components/schemas/group"
+        supervisor:
+          description: 负责社员
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/member_id"
+            name:
+              description: 负责社员姓名
+              type: string
+              example: 熊帆
+            mobile:
+              "$ref": "#/components/schemas/mobile"
+    position_id:
+      description: 职务编号
+      type: integer
+      example: 2
+    position:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/position_id"
+        name:
+          description: 职务名称
+          type: string
+          example: 运维一部部长
+    group_id:
+      description: 部门编号
+      type: integer
+      example: 2
+    group:
+      description: 部门
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/group_id"
+        name:
+          description: 部门名称
+          type: string
+          example: 运维一部
+    user_id:
+      description: 用户编号
+      type: integer
+      example: 3007
+    name:
+      description: 姓名
+      type: string
+      example: 熊帆
+    netid:
+      description: CAS统一身份认证系统的登录名
+      type: string
+      example: tmdgame
+    gender:
+      description: 性别
+      type: string
+      enum:
+      - 未知
+      - 男
+      - 女
+    userno:
+      description: 学工号
+      type: string
+      pattern: ^\d{10}$
+      example: 2160502001
+    mobile:
+      description: 手机号码
+      type: string
+      pattern: ^(13[0-9]|14[5-9]|15[0-3,5-9]|16[2,5,6,7]|17[0-8]|18[0-9]|19[0-3,5-9])\d{8}$
+      example: 13973986117
+    qq:
+      description: QQ号
+      type: string
+      pattern: ^[1-9][0-9]{4,10}$
+    wechat:
+      description: 微信号
+      type: string
+      pattern: ^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$
+    wechat_openid:
+      description: 微信OpenID
+      type: string
+      example: wxid_abcdef123456
+    alipay:
+      description: 支付宝账号
+      type: string
+    email:
+      description: 电子邮箱
+      type: string
+    college:
+      description: 所在学院
+      type: string
+      example: 电子与信息工程学院
+    class:
+      description: 班级
+      type: string
+      example: 计算机71
+    create_at:
+      description: 创建时间
+      type: integer
+      example: 15777777777
+    room_name:
+      description: 宿舍房间名
+      type: string
+      example: 709
+    member_id:
+      description: 社员编号
+      type: integer
+      example: 2016001
+    member:
+      description: 社员
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/member_id"
+        user_id:
+          $ref: "#/components/schemas/user_id"
+        name:
+          $ref: "#/components/schemas/name"
+        userno:
+          $ref: "#/components/schemas/userno"
+        netid:
+          $ref: "#/components/schemas/netid"
+        position_id:
+          $ref: "#/components/schemas/position_id"
+        group_id:
+          $ref: "#/components/schemas/group_id"
+        mobile:
+          $ref: "#/components/schemas/mobile"
+        create_at:
+          $ref: "#/components/schemas/create_at"
+        log_at:
+          description: 最后登陆时间
+          type: integer
+          example: 15777777777
+    member_all:
+      description: 完整的社员信息
+      allOf:
+      - $ref: "#/components/schemas/member"
+      - type: object
+        properties:
+          wechat_openid:
+            $ref: "#/components/schemas/wechat_openid"
+          gender:
+            $ref: "#/components/schemas/gender"
+          college:
+            $ref: "#/components/schemas/college"
+          class:
+            $ref: "#/components/schemas/class"
+          dorm_building_id:
+            $ref: "#/components/schemas/building_id"
+          dorm_room_name:
+            $ref: "#/components/schemas/room_name"
+          mobile:
+            $ref: "#/components/schemas/mobile"
+          qq:
+            $ref: "#/components/schemas/qq"
+          wechat:
+            $ref: "#/components/schemas/wechat"
+          alipay:
+            $ref: "#/components/schemas/alipay"
+          email:
+            $ref: "#/components/schemas/email"
+          hometown:
+            description: 生源地
+            type: string
+          birthday:
+            description: 生日
+            type: string
+          created_at:
+            description: 入社时间
+            type: integer
+          updated_at:
+            description: 信息更新时间
+            type: integer
+          deleted_at:
+            description: 退社时间
+            type: integer
+    point_record_id:
+      description: 积分记录编号
+      type: integer
+      example: 21
+    point_record:
+      description: 积分记录
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/point_record_id"
+        user_id:
+          $ref: "#/components/schemas/user_id"
+        count:
+          description: 记录数值
+          type: integer
+          example: 4
+        edit_member_id:
+          $ref: "#/components/schemas/member_id"
+        remark:
+          description: 记录说明
+          type: string
+          example: 活动奖励
+        created_at:
+          description: 记录时间
+          type: integer
+          example: 23555666
+    service_id:
+      description: 服务方式编号
+      type: integer
+      example: 2
+    order_id:
+      description: 报修单ID
+      type: integer
+      example: 3
+    order_state:
+      description: 报修单状态
+      type: "string"
+      enum:
+      - "all"
+      - "created"
+      - "processing"
+      - "finished"
+      example: "created"
+    order:
+      description: 报修单
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/order_id"
+        user_id:
+          $ref: "#/components/schemas/user_id"
+        building_id:
+          $ref: "#/components/schemas/building_id"
+        room_name:
+          $ref: "#/components/schemas/room_name"
+        mobile:
+          $ref: "#/components/schemas/mobile"
+        service_id:
+          $ref: "#/components/schemas/service_id"
+        member_id:
+          $ref: "#/components/schemas/member_id"
+        created_at:
+          description: 订单创建时间
+          type: integer
+          minimum: 0
+          example: 1579793174
+        order_state:
+          $ref: "#/components/schemas/order_state"
+    order_all:
+      description: 完整订单信息
+      allOf:
+      - $ref: "#/components/schemas/order"
+      - type: object
+        properties:
+          qq:
+            $ref: "#/components/schemas/qq"
+          wechat:
+            $ref: "#/components/schemas/wechat"
+          user_remark:
+            description: 用户备注
+            type: string
+            maxLength: 10000
+            example: "网坏了，拨号拨不上"
+          member_remark:
+            description: 社员备注
+            type: string
+            maxLength: 10000
+            example: "转给lvcs办理。这人只有晚上有空，上门带测线仪"
+          user_evaluate_msg:
+            description: 用户评价
+            type: string
+            maxLength: 1000
+            example: "很满意，小哥哥很帅啊，技术又好态度也好~"
+          user_evaluate_score:
+            description: 用户评分
+            type: integer
+            minimum: 1
+            maximum: 5
+            example: 5
+          member_evaluate_msg:
+            description: 社员评价
+            type: string
+            maxLength: 1000
+            example: "感谢你的肯定，你的满意是我们的心愿"
+          member_evaluate_score:
+            description: 社员评分
+            type: integer
+            minimum: 1
+            maximum: 5
+            example: 5
+          manager_evaluate_msg:
+            description: 主管附加评价
+            type: string
+            maxLength: 1000
+            example: "跑了很多趟，辛苦了"
+          manager_evaluate_score:
+            description: 主管附加评分
+            type: integer
+            minimum: -2
+            maximum: 2
+            example: 2
+          received_at:
+            description: 接单时间
+            type: integer
+            minimum: 0
+            example: 1579794407
+          user_urged_at:
+            description: 用户催单时间
+            type: integer
+            minimum: 0
+            example: 0
+          member_urged_at:
+            description: 社员催单时间
+            type: integer
+            minimum: 0
+            example: 0
+          manager_urged_at:
+            description: 主管催单时间
+            type: integer
+            minimum: 0
+            example: 0
+          completed_at:
+            description: 结单时间
+            type: integer
+            minimum: 0
+            example: 1579796455
+            
+  responses:
+    200:
+      description: "成功"
+    201:
+      description: "创建成功"
+    204:
+      description: "删除成功"
+    404:
+      description: "没有符合条件的数据"
+    409:
+      description: "冲突"
+  parameters:
+    page:
+      name: page
+      in: query
+      description: 分页参数，指定获取第几页，默认1
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      example: 1
+    per_page:
+      name: per_page
+      in: query
+      description: 分页参数，指定每页数据量，可选10-100，默认30
+      required: false
+      schema:
+        type: integer
+        default: 30
+        minimum: 10
+        maximum: 100
+      example: 30
+    since:
+      name: since
+      in: query
+      description: 时间戳，获取在此时刻之后的数据
+      required: false
+      schema:
+        type: integer
+      example: 0
+    before:
+      name: before
+      in: query
+      description: 时间戳，获取在此时刻之前的数据
+      required: false
+      schema:
+        type: integer
+      example: 0
+    direction:
+      name: direction
+      in: query
+      description: 按照时间戳排序后返回数据
+      required: false
+      schema:
+        type: string
+        enum:
+          - desc
+          - asc
+      example: desc
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: 使用语言
+      required: false
+      schema:
+        type: string
+        default: zh
+        enum:
+          - zh
+          - en

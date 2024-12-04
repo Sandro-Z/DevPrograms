@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  api-micro-mail:
+    image: registry.dev.xjtuana.cn/xjtuana/api-micro-mail:latest
+    container_name: xjtuana-api-micro-mail
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./config.toml
+        target: /etc/xjtuana-api/config.toml
+        read_only: true
+    networks:
+      br-xjtuana: {}
+    ports:
+      - 8080:8080
+
+  mariadb:
+    image: ghcr.io/linuxserver/mariadb:latest
+    container_name: xjtuana-mariadb
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 30
+    restart: unless-stopped
+    networks:
+      br-xjtuana: {}
+    expose:
+      - 3306
+    environment:
+      - PUID=${MARIADB_PUID:-1000}
+      - PGID=${MARIADB_PGID:-1000}
+      - TZ=${MARIADB_TZ:-Asia/Shanghai}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-password}
+      - MYSQL_DATABASE=${MARIADB_DATABASE:-database}
+      - MYSQL_USER=${MARIADB_USER:-user}
+      - MYSQL_PASSWORD=${MARIADB_PASSWORD:-password}
+
+networks:
+  br-xjtuana:
+    driver: bridge
+    name: br-xjtuana

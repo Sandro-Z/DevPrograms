@@ -1,0 +1,14 @@
+################################################################################
+## API Micro Mail Service
+################################################################################
+[api.micro.mail]
+dsn = "user:password@tcp(mariadb:3306)/database?parseTime=True&loc=Local"
+
+[api.micro.mail.server]
+addr = ":8080"
+
+[api.micro.mail.smtp]
+hostname = "smtp-mail.outlook.com:587"
+nicename = "example"
+username = "noreply@example.com"
+password = "P@ssw0rd"
