@@ -30,7 +30,7 @@
 * littlebackend by nighttale:[Readme](./littlebackend/README.md),[Files](./littlebackend)
 	> 唐雨萧，杨斯涵，曾斯奇使用gin框架编写的后端
 
-* Network-manager by ncoder: [Readme](./network-manager/README.md),[Files](./network-manager)
+* Network-manager by ncoder: [Readme](./network_manager/README.md),[Files](./network_manager)
 	> 作用尚不明确。
 	
 * pub-config by Uebian: [File](./pub-config)
