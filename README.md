@@ -42,3 +42,6 @@
 * roles by Liu Qianyu: [File](./roles)
 	> 作用尚不明确。猜测可能与数据库中社员的roles有关？
 	
+## 新内网
+
+[Readme](./内网/新版内网访问文档.md)
