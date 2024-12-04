@@ -5,11 +5,11 @@
 
 ## 索引
 
-1.api-common by Uebian:[Readme](./api-common/README.md),[Files](./api-common)
+* api-common by Uebian:[Readme](./api-common/README.md),[Files](./api-common)
 
 
-2.apidoc by tomdang:[Files](./apidoc)
+* apidoc by tomdang:[Files](./apidoc)
 	> 原网站api文档
 
-3.api-micro-test by ncoder:[Readme](./api-micro-test/README.md),[Files](./api-micro-test)
+* api-micro-test by ncoder:[Readme](./api-micro-test/README.md),[Files](./api-micro-test)
 	> 从零开始新建的简单微服务项目（但是readme上写的是micro mail？）
